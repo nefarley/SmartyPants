@@ -17,7 +17,6 @@ class LetterAdapter: RecyclerView.Adapter<LetterAdapter.LetterViewHolder>() {
 
     private val list = ('A').rangeTo('Z').toList()
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LetterViewHolder {
         val layout = LayoutInflater
             .from(parent.context)
@@ -30,17 +29,12 @@ class LetterAdapter: RecyclerView.Adapter<LetterAdapter.LetterViewHolder>() {
         val item = list[position]
         holder.letterText.text = item.toString()
         holder.letterImage.setOnClickListener {
-           /* val action = LetterListFragmentDirections.actionLetterListFragmentToWordListFragment(
-                letter = holder.letterText.text.toString()
-            )
-            holder.view.findNavController().navigate(action)*/
+            val action = LetterListFragmentDirections.actionLetterListFragmentToDefinitionFragment3()
+            holder.view.findNavController().navigate(action)
         }
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
-
-
-
 }

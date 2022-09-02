@@ -1,10 +1,17 @@
 package com.example.smartypants
 
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.example.smartypants.databinding.DetailActivityBinding
+import com.example.smartypants.databinding.FragmentDefinitionBinding
+import com.example.smartypants.databinding.FragmentLetterListBinding
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -16,10 +23,14 @@ private const val ARG_PARAM2 = "param2"
  * Use the [DefinitionFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DefinitionFragment : Fragment() {
+class DefinitionFragment : Fragment(), TextToSpeech.OnInitListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var tts: TextToSpeech? = null
+    private var _binding: FragmentDefinitionBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var letterId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,14 +38,38 @@ class DefinitionFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+    /**
+     * speakOut() function will speak the definitionText
+     */
+    private fun speakOut(text: String) {
+        tts!!.speak(text, TextToSpeech.QUEUE_FLUSH,null,"")
+    }
+
+    override fun onInit(status: Int) {
+        if(status == TextToSpeech.SUCCESS){
+            val result = tts!!.setLanguage(Locale.US)
+            if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
+                Toast.makeText(context,"This language is not supported",Toast.LENGTH_LONG)
+            }
+        }else   {
+            Log.d("TTS","Initialization failed")
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_definition, container, false)
+        _binding = FragmentDefinitionBinding.inflate(inflater,container,false)
+        val view = binding.root
+
+        tts = TextToSpeech(context,this)
+        binding.definitionSound.setOnClickListener {
+            speakOut(binding.definitionWord.text.toString())
+        }
+        return view
     }
 
     companion object {
@@ -55,5 +90,16 @@ class DefinitionFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+
+    override fun onDestroyView() {
+        _binding = null
+        if(tts != null){
+            tts!!.stop()
+            tts!!.shutdown()
+        }
+        super.onDestroyView()
+
     }
 }

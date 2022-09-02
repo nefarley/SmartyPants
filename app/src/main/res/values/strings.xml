@@ -2,4 +2,9 @@
     <string name="app_name">Smarty Pants</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="definitionWord">Joy</string>
+    <string name="definitionPronunce">[joi]</string>
+    <string name="pronunciation_sound_icon">pronunciation sound icon</string>
+    <string name="definition">a feeling of great pleasure and happiness.</string>
+    <string name="definitionLetter">J</string>
 </resources>

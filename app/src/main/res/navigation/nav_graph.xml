@@ -9,10 +9,24 @@
         android:id="@+id/letterListFragment"
         android:name="com.example.smartypants.LetterListFragment"
         android:label="fragment_letter_list"
-        tools:layout="@layout/fragment_letter_list" />
+        tools:layout="@layout/fragment_letter_list" >
+        <action
+            android:id="@+id/action_letterListFragment_to_definitionFragment3"
+            app:destination="@id/definitionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/definitionFragment"
+        android:name="com.example.smartypants.DefinitionFragment"
+        android:label="fragment_definition"
+        tools:layout="@layout/fragment_definition">
+
+    </fragment>
+
     <activity
         android:id="@+id/detailActivity"
         android:name="com.example.smartypants.DetailActivity"
         android:label="detail_activity"
         tools:layout="@layout/detail_activity" />
+
+
 </navigation>
