@@ -37,4 +37,8 @@ class LetterAdapter: RecyclerView.Adapter<LetterAdapter.LetterViewHolder>() {
     override fun getItemCount(): Int {
         return list.size
     }
+
+
+
+
 }
