@@ -10,7 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DefinitionsDao{
     @Query("SELECT * FROM definitions_table ORDER BY letter ASC")
-    fun getDefinitions(): Flow<List<Definitions>>
+    fun getAllDefinitions(): Flow<List<Definitions>>
+
+    @Query("SELECT * FROM definitions_table WHERE letter = :letter")
+    fun getDefinition(letter:String): Flow<List<Definitions>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(letter:Definitions)

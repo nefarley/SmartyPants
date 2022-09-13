@@ -1,6 +1,7 @@
 package com.example.smartypants.database
 
 import androidx.annotation.WorkerThread
+import com.example.smartypants.LetterAdapter
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -10,7 +11,8 @@ import kotlinx.coroutines.flow.Flow
  **/
 class DefinitionsRepository(private val definitionsDao: DefinitionsDao) {
     //Room will execute the queries in a separate thread
-    val definitions: Flow<List<Definitions>> = definitionsDao.getDefinitions()
+    val allDefinitions: Flow<List<Definitions>> = definitionsDao.getAllDefinitions()
+    //val definition: Flow<List<Definitions>> = definitionsDao.getDefinition()
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread

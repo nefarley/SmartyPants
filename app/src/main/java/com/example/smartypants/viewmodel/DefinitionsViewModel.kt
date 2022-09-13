@@ -2,11 +2,14 @@ package com.example.smartypants.viewmodel
 
 import androidx.lifecycle.*
 import com.example.smartypants.database.Definitions
+import com.example.smartypants.database.DefinitionsDao
 import com.example.smartypants.database.DefinitionsRepository
 import kotlinx.coroutines.launch
+import java.util.concurrent.Flow
 
 class DefinitionsViewModel(private val definitionsRepository: DefinitionsRepository): ViewModel() {
-    val definitions: LiveData<List<Definitions>> = definitionsRepository.definitions.asLiveData()
+    val allDefinitions: LiveData<List<Definitions>> = definitionsRepository.allDefinitions.asLiveData()
+    //val definition: LiveData<List<Definitions>> = definitionsRepository.definition.asLiveData()
 
     /**
      * Launching a new coroutine to insert the data
