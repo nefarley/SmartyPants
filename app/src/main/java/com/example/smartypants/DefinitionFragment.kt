@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.smartypants.databinding.DetailActivityBinding
+import androidx.fragment.app.activityViewModels
+
 import com.example.smartypants.databinding.FragmentDefinitionBinding
-import com.example.smartypants.databinding.FragmentLetterListBinding
+import com.example.smartypants.viewmodel.DefinitionViewModelFactory
+import com.example.smartypants.viewmodel.DefinitionsViewModel
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,16 +29,25 @@ class DefinitionFragment : Fragment(), TextToSpeech.OnInitListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    companion object{
+        var LETTER = "letter"
+    }
+
     private var tts: TextToSpeech? = null
     private var _binding: FragmentDefinitionBinding? = null
     private val binding get() = _binding!!
-    private lateinit var letterId: String
+    private lateinit var letter: String
+
+    private val viewModel: DefinitionsViewModel by activityViewModels {
+        DefinitionViewModelFactory(
+            (activity?.application as DefinitionsApplication).repository
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            letter = it.getString(LETTER).toString()
         }
 
     }
@@ -68,11 +79,19 @@ class DefinitionFragment : Fragment(), TextToSpeech.OnInitListener {
         tts = TextToSpeech(context,this)
         binding.definitionSound.setOnClickListener {
             speakOut(binding.definitionWord.text.toString())
+
+            //val definition = Definitions(1,"A","Apple","/ˈapəl/", "the round fruit of a tree of the rose family, which typically has thin red or green skin and crisp flesh.")
+            //viewModel.insertDefinition(definition)
         }
         return view
     }
 
-    companion object {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getDefinition(binding.definitionWord.toString())
+    }
+
+    /* companion object {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -90,7 +109,7 @@ class DefinitionFragment : Fragment(), TextToSpeech.OnInitListener {
                     putString(ARG_PARAM2, param2)
                 }
             }
-    }
+    } */
 
 
     override fun onDestroyView() {

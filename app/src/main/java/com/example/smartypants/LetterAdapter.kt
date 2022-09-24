@@ -29,7 +29,9 @@ class LetterAdapter: RecyclerView.Adapter<LetterAdapter.LetterViewHolder>() {
         val item = list[position]
         holder.letterText.text = item.toString()
         holder.letterImage.setOnClickListener {
-            val action = LetterListFragmentDirections.actionLetterListFragmentToDefinitionFragment3()
+            val action = LetterListFragmentDirections.actionLetterListFragmentToDefinitionFragment3(
+                letter = holder.letterText.toString()
+            )
             holder.view.findNavController().navigate(action)
         }
     }

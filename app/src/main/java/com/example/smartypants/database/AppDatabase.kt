@@ -22,9 +22,9 @@ public abstract class AppDatabase: RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                "definitions_database").build()
+                "definitions_database").fallbackToDestructiveMigration().build()
                 INSTANCE = instance
-                instance
+                return instance
             }
         }
     }

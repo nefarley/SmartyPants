@@ -20,6 +20,9 @@
         android:label="fragment_definition"
         tools:layout="@layout/fragment_definition">
 
+        <argument
+            android:name="letter"
+            app:argType="string" />
     </fragment>
 
     <activity

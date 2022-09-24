@@ -13,10 +13,13 @@ interface DefinitionsDao{
     fun getAllDefinitions(): Flow<List<Definitions>>
 
     @Query("SELECT * FROM definitions_table WHERE letter = :letter")
-    fun getDefinition(letter:String): Flow<List<Definitions>>
+    fun getDefinition(letter:String): Flow<Definitions>
+
+ /*   @Query("SELECT letter,word,pronounce,definition FROM definitions_table WHERE letter = :letter")
+    fun definition(letter:String): Flow<List<Definitions>>**/
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(letter:Definitions)
+    suspend fun insert(definition:Definitions)
 
     @Query("DELETE FROM definitions_table")
     suspend fun deleteAll()

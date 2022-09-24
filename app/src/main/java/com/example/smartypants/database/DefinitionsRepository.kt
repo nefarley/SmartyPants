@@ -1,6 +1,8 @@
 package com.example.smartypants.database
 
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import com.example.smartypants.LetterAdapter
 import kotlinx.coroutines.flow.Flow
 
@@ -14,9 +16,14 @@ class DefinitionsRepository(private val definitionsDao: DefinitionsDao) {
     val allDefinitions: Flow<List<Definitions>> = definitionsDao.getAllDefinitions()
     //val definition: Flow<List<Definitions>> = definitionsDao.getDefinition()
 
+     fun definition(letter:String): LiveData<Definitions>{
+        return  definitionsDao.getDefinition(letter).asLiveData()
+    }
+
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun insert(definition:Definitions){
         definitionsDao.insert(definition)
     }
+
 }
