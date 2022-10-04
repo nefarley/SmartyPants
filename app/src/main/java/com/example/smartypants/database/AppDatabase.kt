@@ -5,8 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Definitions::class], version = 1, exportSchema = false)
-public abstract class AppDatabase: RoomDatabase() {
+@Database(entities = [Definitions::class], version = 2, exportSchema = false)
+ abstract class AppDatabase: RoomDatabase() {
     abstract fun definitionsDao(): DefinitionsDao
 
     companion object{
