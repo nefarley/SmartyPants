@@ -5,24 +5,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.smartypants.database.DefinitionsRepository
 import com.example.smartypants.databinding.FragmentLetterListBinding
+import com.example.smartypants.viewmodel.DefinitionViewModelFactory
+import com.example.smartypants.viewmodel.DefinitionsViewModel
 
 
 class LetterListFragment : Fragment() {
     private var _binding: FragmentLetterListBinding? = null
     private val binding get() = _binding!!
-    private lateinit var recyclerView: RecyclerView
-    private var isLinearLayoutManager = true
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    private val definitionViewModel: DefinitionsViewModel by activityViewModels {
+        DefinitionViewModelFactory(
+            (activity?.application as DefinitionsApplication).repository.definitionsDao()
+        )
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,13 +33,21 @@ class LetterListFragment : Fragment() {
         _binding = FragmentLetterListBinding.inflate(inflater,container, false)
         val view = binding.root
         return view
-        //return inflater.inflate(R.layout.fragment_letter_list, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        recyclerView = binding.recyclerView
-        recyclerView.layoutManager = GridLayoutManager(context,2)
-       // recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = LetterAdapter()
+        //recyclerview
+        val adapter = LetterAdapter{
+            val action = LetterListFragmentDirections.actionLetterListFragmentToDefinitionFragment3(it.letter)
+            this.findNavController().navigate(action)
+        }
+        binding.recyclerView.adapter = adapter
+        //viewmodel
+        definitionViewModel.allDefinitions.observe(this.viewLifecycleOwner){
+                definition -> definition.let {
+                    adapter.submitList(it)
+            }
+        }
+        binding.recyclerView.layoutManager = GridLayoutManager(this.context,2)
     }
 
 

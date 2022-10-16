@@ -7,18 +7,16 @@ import com.example.smartypants.database.DefinitionsRepository
 import kotlinx.coroutines.launch
 import java.util.concurrent.Flow
 
-class DefinitionsViewModel(private val definitionsRepository: DefinitionsRepository): ViewModel(){
-    val allDefinitions: LiveData<List<Definitions>> = definitionsRepository.allDefinitions.asLiveData()
-    //val allDefinitions: LiveData<List<Definitions>> = definitionsRepository.allDefinitions.asLiveData()
-    //val definition: LiveData<List<Definitions>> = definitionsRepository.definition.asLiveData()
-
+class DefinitionsViewModel(private val definitionsDao: DefinitionsDao): ViewModel(){
+    val allDefinitions: LiveData<List<Definitions>> = definitionsDao.getAllDefinitions().asLiveData()
 
     /**fun getDefinition(letter:String) = viewModelScope.launch {
         definitionsRepository.getDefinition(letter)
     }**/
-    fun getDefinition(letter:String): LiveData<Definitions>{
-        return definitionsRepository.definition(letter)
-    }
+    /*fun getDefinition(letter:String): LiveData<Definitions>{
+        //return definitionsRepository.definition(letter)
+        return definitionsDao.getDefinition(letter)
+    }*/
     /**
      * Launching a new coroutine to insert the data
      * in a non-blocking way
@@ -33,12 +31,17 @@ class DefinitionsViewModel(private val definitionsRepository: DefinitionsReposit
             definition = definition
         )
     }
+
+    fun getDefinition(letter:String): LiveData<Definitions>{
+        return definitionsDao.getDefinition(letter).asLiveData()
+    }
+
     fun addNewDefinition(id: Int, letter: String, word: String, pronounce: String, definition: String){
         val newDefinition = getNewDefinition(id,letter,word,pronounce,definition)
         insertDefinition(newDefinition)
     }
     fun insertDefinition(definition: Definitions) = viewModelScope.launch {
-        definitionsRepository.insert(definition)
+        definitionsDao.insert(definition)
     }
 
 }

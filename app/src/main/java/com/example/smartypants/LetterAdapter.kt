@@ -1,45 +1,45 @@
 package com.example.smartypants
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.smartypants.database.Definitions
+import com.example.smartypants.databinding.ItemViewBinding
 
-class LetterAdapter: RecyclerView.Adapter<LetterAdapter.LetterViewHolder>() {
+class LetterAdapter(private val onItemClick: (Definitions) -> Unit): ListAdapter<Definitions, LetterAdapter.LetterViewHolder>(
+    DiffUtilCallback) {
 
-    class LetterViewHolder(val view: View): RecyclerView.ViewHolder(view) {
-        val letterText: TextView = view.findViewById(R.id.letterText)
-        val letterImage: ImageView = view.findViewById(R.id.imageView)
+    class LetterViewHolder(private var binding: ItemViewBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(definition: Definitions){
+            binding.letterText.text = definition.letter
+        }
     }
-
-    private val list = ('A').rangeTo('Z').toList()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LetterViewHolder {
-        val layout = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.item_view, parent, false)
-
-        return LetterViewHolder(layout)
+        val viewHolder = LetterViewHolder(ItemViewBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        viewHolder.itemView.setOnClickListener {
+            val position = viewHolder.adapterPosition
+            onItemClick(getItem(position))
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: LetterViewHolder, position: Int) {
-        val item = list[position]
-        holder.letterText.text = item.toString()
-        holder.letterImage.setOnClickListener {
-            val action = LetterListFragmentDirections.actionLetterListFragmentToDefinitionFragment3(
-                letter = holder.letterText.toString()
-            )
-            holder.view.findNavController().navigate(action)
+        holder.bind(getItem(position))
+    }
+
+    companion object{
+        private val DiffUtilCallback = object:DiffUtil.ItemCallback<Definitions>(){
+            override fun areItemsTheSame(oldItem: Definitions, newItem: Definitions): Boolean {
+                return oldItem.letter == newItem.letter
+            }
+
+            override fun areContentsTheSame(oldItem: Definitions, newItem: Definitions): Boolean {
+               return oldItem.letter == newItem.letter
+            }
         }
     }
-
-    override fun getItemCount(): Int {
-        return list.size
-    }
-
 
 
 

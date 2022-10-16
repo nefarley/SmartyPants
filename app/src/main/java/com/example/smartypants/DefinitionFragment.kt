@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.example.smartypants.database.Definitions
 
 import com.example.smartypants.databinding.FragmentDefinitionBinding
@@ -32,24 +34,32 @@ class DefinitionFragment : Fragment(), TextToSpeech.OnInitListener {
         var LETTER = "letter"
     }
 
+    private val navigationArgs: DefinitionFragmentArgs by navArgs()
+    lateinit var item: Definitions
     private var tts: TextToSpeech? = null
     private var _binding: FragmentDefinitionBinding? = null
     private val binding get() = _binding!!
     private lateinit var letter: String
-
     private val viewModel: DefinitionsViewModel by activityViewModels {
         DefinitionViewModelFactory(
-            (activity?.application as DefinitionsApplication).repository
+            (activity?.application as DefinitionsApplication).repository.definitionsDao()
         )
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            letter = it.getString(LETTER).toString()
+    private fun bind(item:Definitions){
+        binding.apply {
+            definitionWord.text = item.word
+            definitionPronunce.text = item.pronounce
+            definitionText.text = item.definition
         }
-
     }
+
+
+    /*override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        /* arguments?.let {
+            letter = it.getString(LETTER).toString()
+        }*/
+    } */
 
     /**
      * speakOut() function will speak the definitionText
@@ -78,19 +88,12 @@ class DefinitionFragment : Fragment(), TextToSpeech.OnInitListener {
         tts = TextToSpeech(context,this)
         binding.definitionSound.setOnClickListener {
             speakOut(binding.definitionWord.text.toString())
-
-            /*val definition = Definitions(23,"A","Apple","/ˈapəl/", "the round fruit of a tree of the rose family, which typically has thin red or green skin and crisp flesh.")
-            viewModel.insertDefinition(definition)*/
-            binding.addDefinitionButton.setOnClickListener {
-                    addDefinition()
-                Toast.makeText(requireContext(),"Definition Added!",Toast.LENGTH_LONG).show()
-            }
         }
         return view
     }
 
 
-    private fun addDefinition(){
+  /*  private fun addDefinition(){
         val letter = binding.definitionWord.text.toString()
         val word = binding.definitionWord.text.toString()
         val pronounce = binding.definitionPronunce.text.toString()
@@ -98,11 +101,17 @@ class DefinitionFragment : Fragment(), TextToSpeech.OnInitListener {
 
         val fullDefinition = Definitions(3,letter,word,pronounce,definition)
         viewModel.insertDefinition(fullDefinition)
-    }
+    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getDefinition(binding.definitionWord.toString())
+        //viewModel.getDefinition(binding.definitionWord.toString())
+        val letter = navigationArgs.letter
+        viewModel.getDefinition(letter).observe(this.viewLifecycleOwner){
+            selectedItem ->
+            item = selectedItem
+            bind(item)
+        }
     }
 
 
