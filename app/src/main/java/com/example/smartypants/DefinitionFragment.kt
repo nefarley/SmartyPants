@@ -18,10 +18,6 @@ import com.example.smartypants.viewmodel.DefinitionViewModelFactory
 import com.example.smartypants.viewmodel.DefinitionsViewModel
 import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -67,7 +63,6 @@ class DefinitionFragment : Fragment(), TextToSpeech.OnInitListener {
     private fun speakOut(text: String) {
         tts!!.speak(text, TextToSpeech.QUEUE_FLUSH,null,"")
     }
-
     override fun onInit(status: Int) {
         if(status == TextToSpeech.SUCCESS){
             val result = tts!!.setLanguage(Locale.US)

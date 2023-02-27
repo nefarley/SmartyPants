@@ -37,7 +37,7 @@ class LetterListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //recyclerview
         val adapter = LetterAdapter{
-            val action = LetterListFragmentDirections.actionLetterListFragmentToDefinitionFragment3(it.letter)
+            val action = LetterListFragmentDirections.actionLetterListFragmentToDefinitionFragment(it.letter)
             this.findNavController().navigate(action)
         }
         binding.recyclerView.adapter = adapter

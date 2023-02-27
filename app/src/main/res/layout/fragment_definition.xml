@@ -13,7 +13,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="165dp"
         android:text="@string/definitionWord"
-        android:textSize="40sp"
+        android:textSize="45sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,49 +21,52 @@
         android:id="@+id/definitionPronunce"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
         android:text="@string/definitionPronunce"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/definitionWord"
-        app:layout_constraintStart_toEndOf="@+id/definitionWord"
-        app:layout_constraintTop_toTopOf="@+id/definitionWord" />
+        android:textSize="35sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/definitionWord"
+        app:layout_constraintStart_toStartOf="@+id/definitionWord"
+        app:layout_constraintTop_toBottomOf="@+id/definitionWord" />
 
     <ImageView
         android:id="@+id/definitionSound"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="175dp"
+        android:layout_marginEnd="24dp"
         android:contentDescription="@string/pronunciation_sound_icon"
         android:src="@drawable/ic_sound"
-        app:layout_constraintBottom_toBottomOf="@+id/definitionPronunce"
+        app:layout_constraintBottom_toBottomOf="@+id/definitionWord"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/definitionPronunce"
-        app:layout_constraintTop_toTopOf="@+id/definitionPronunce" />
+        app:layout_constraintStart_toEndOf="@+id/definitionWord"
+        app:layout_constraintTop_toTopOf="@+id/definitionWord" />
 
     <TextView
         android:id="@+id/definitionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/definition"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.018"
-        app:layout_constraintStart_toStartOf="@+id/definitionWord"
-        app:layout_constraintTop_toBottomOf="@+id/definitionWord"
-        app:layout_constraintVertical_bias="0.065" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/definitionPronunce"
+        app:layout_constraintVertical_bias="0.042" />
 
-    <Button
+    <!--<Button
         android:id="@+id/addDefinitionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Add Definition"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/definitionText" />
+        app:layout_constraintTop_toBottomOf="@+id/definitionText" /> -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
