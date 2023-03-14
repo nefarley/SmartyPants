@@ -19,13 +19,14 @@
 
     <TextView
         android:id="@+id/definitionPronunce"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/definitionPronunce"
         android:textSize="35sp"
         android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="@+id/definitionWord"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/definitionWord"
         app:layout_constraintTop_toBottomOf="@+id/definitionWord" />
 
